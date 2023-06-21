@@ -1,32 +1,34 @@
 package com.example.restfulApi.calender.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDate;
+
 
 @Data
 @Entity
 public class Task {
 
-    public Task(){
+    public Task(){};
 
-    }
-
-    public Task(Integer id, String name, String description, LocalDate taskDate) {
+    public Task(Integer id, String description, LocalDate taskDate) {
         super();
         this.id = id;
-        this.username = name;
         this.description = description;
         this.taskDate = taskDate;
     }
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer id;
-    private String username;
+
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
     private String description;
     private LocalDate taskDate;
 }
